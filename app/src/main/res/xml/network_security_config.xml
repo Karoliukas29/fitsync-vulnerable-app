@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    [V-04] Certificate pinning is defined below but commented out with a TODO.
+    The app builds and runs with only cleartext disabled — no actual pinning.
+    An attacker with a custom CA cert (or proxy) can MITM all traffic.
+    This is a common developer mistake: pins are defined for the staging environment
+    but "temporarily" disabled before the release and never re-enabled.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false"/>
+
+    <domain-config>
+        <domain includeSubdomains="true">api.fitsync.io</domain>
+        <!--
+        TODO: Re-enable pin-set after certificate rotation (Ticket: FS-2847)
+        <pin-set expiration="2027-06-01">
+            <pin digest="SHA-256">grX4Ta2b6KNFbLTNFVEzB1FbNBKs8gw9TkPQNde9C4o=</pin>
+            <pin digest="SHA-256">YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=</pin>
+        </pin-set>
+        -->
+    </domain-config>
+
+    <!--
+        [V-17] Cleartext traffic explicitly re-enabled for the analytics domain.
+        The engineer added this to unblock a third-party SDK during development
+        ("analytics doesn't need TLS, it's not sensitive data") and it was never reverted.
+        Any network observer — coffeeshop Wi-Fi, ISP, MITM proxy — can read the full
+        request body including the api_key query parameter and all user event data.
+    -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">analytics.fitsync.io</domain>
+    </domain-config>
+</network-security-config>

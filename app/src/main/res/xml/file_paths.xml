@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    [V-08] path="." exposes the entire internal files/ directory.
+    Any app that receives a URI from this FileProvider can traverse the full directory.
+    Should be: <files-path path="reports/" name="reports"/>
+-->
+<paths>
+    <files-path path="." name="files"/>
+    <cache-path path="." name="cache"/>
+</paths>

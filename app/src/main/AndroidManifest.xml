@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!--
+        [V-04] networkSecurityConfig correctly references @xml/network_security_config
+        but inside that file the certificate pins are commented out ("TODO: update before release").
+        The file LOOKS like pinning is configured — it's not actually applied.
+    -->
+    <application
+        android:name=".FitSyncApp"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FitSync">
+
+        <activity android:name=".ui.splash.SplashActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.login.LoginActivity" android:exported="false"/>
+        <activity android:name=".ui.dashboard.DashboardActivity" android:exported="false"/>
+        <activity android:name=".ui.member.MemberDetailActivity" android:exported="false"/>
+        <activity android:name=".ui.payment.PaymentActivity" android:exported="false"/>
+        <activity android:name=".ui.premium.PremiumGateActivity" android:exported="false"/>
+        <activity android:name=".ui.settings.SettingsActivity" android:exported="false"/>
+
+        <!--
+            [V-09] Deep link for password reset — no android:autoVerify="true"
+            Without Digital Asset Links verification, any app on the device can register
+            the same scheme and intercept fitsync://reset?token=... links,
+            stealing password-reset tokens.
+        -->
+        <activity android:name=".ui.auth.DeepLinkActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="fitsync" android:host="auth"/>
+            </intent-filter>
+        </activity>
+
+        <!--
+            [V-07] Exported BroadcastReceiver with no permission guard.
+            Handles FORCE_LOGOUT and GRANT_PREMIUM — any app on the device can send
+            these broadcasts without any authorization.
+        -->
+        <receiver android:name=".receiver.SessionReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.fitsync.app.FORCE_LOGOUT"/>
+                <action android:name="com.fitsync.app.GRANT_PREMIUM"/>
+                <action android:name="com.fitsync.app.SESSION_SYNC"/>
+            </intent-filter>
+        </receiver>
+
+        <!--
+            [V-08] FileProvider path is too broad — exports the entire files/ directory.
+            Should be a specific sub-path like /reports/ instead of /.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.fitsync.app.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fitsync_default"/>
+
+    </application>
+</manifest>

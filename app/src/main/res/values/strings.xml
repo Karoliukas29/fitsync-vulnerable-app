@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">FitSync Pro</string>
+    <string name="app_tagline">Gym Management, Simplified</string>
+
+    <!-- [V-05] Firebase config duplicated in strings for legacy SDK compatibility -->
+    <string name="firebase_database_url">https://fitsync-pro-d7e2f-default-rtdb.firebaseio.com</string>
+    <string name="google_api_key">AIzaSyD4mR9pL6wK3nJ8vB1xQ5uE2oH7tY0cW</string>
+    <string name="google_app_id">1:837461920543:android:a4b2c1d9e8f7a3b2</string>
+    <string name="project_id">fitsync-pro-d7e2f</string>
+
+    <!-- UI strings -->
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in with your FitSync account</string>
+    <string name="biometric_prompt_title">FitSync Authentication</string>
+    <string name="biometric_prompt_description">Confirm your identity to access your dashboard</string>
+    <string name="biometric_prompt_negative">Use password instead</string>
+    <string name="error_invalid_credentials">Incorrect email or password</string>
+    <string name="error_network">Connection failed. Check your internet.</string>
+    <string name="label_email">Email address</string>
+    <string name="label_password">Password</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_biometric">Use biometric</string>
+    <string name="btn_upgrade">Upgrade to Pro</string>
+    <string name="premium_title">FitSync Pro</string>
+    <string name="premium_subtitle">Unlock advanced analytics and unlimited members</string>
+    <string name="payment_title">Payment Details</string>
+    <string name="payment_confirm">Confirm Payment</string>
+    <string name="member_since">Member since</string>
+    <string name="plan_monthly">Monthly — €12.99</string>
+    <string name="plan_annual">Annual — €99.99 (save 36%%)</string>
+    <string name="notification_payment_title">Payment processed</string>
+    <string name="notification_payment_text">Your subscription has been renewed</string>
+    <string name="channel_payments">Payments</string>
+    <string name="channel_alerts">Alerts</string>
+</resources>

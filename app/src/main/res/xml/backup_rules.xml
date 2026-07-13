@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    [V-12] No backup exclusion rules defined for sensitive paths.
+    shared_prefs/ (contains encrypted session token) and files/ (contains downloaded
+    member reports with PII) are both included in cloud backup by default.
+    Result: adb backup or Google Account backup can extract session tokens and PII.
+    Fix: exclude domain="sharedpref" and domain="file" for sensitive paths.
+-->
+<full-backup-content>
+</full-backup-content>

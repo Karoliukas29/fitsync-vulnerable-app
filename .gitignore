@@ -1,0 +1,19 @@
+# Build output & caches
+build/
+.gradle/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Answer key — kept private on purpose (this is a challenge)
+VULNERABILITIES.md
+
+# IDE / local
+.idea/
+*.iml
+local.properties
+.DS_Store
+
+# Decompiled artifacts
+*_decoded/

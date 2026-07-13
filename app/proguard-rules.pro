@@ -1,0 +1,3 @@
+-keepattributes SourceFile,LineNumberTable
+-keep class com.fitsync.app.data.remote.models.** { *; }
+-dontwarn javax.annotation.**

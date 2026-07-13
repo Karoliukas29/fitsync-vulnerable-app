@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    [V-14] No FLAG_SECURE set on this Activity — the payment screen can be
+    recorded by screen-capture apps or shown in app switcher thumbnails.
+    Fix: getWindow().setFlags(FLAG_SECURE, FLAG_SECURE) in onCreate()
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/fs_background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="@dimen/page_margin">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/payment_title" android:textSize="24sp"
+            android:textColor="@color/fs_text_primary" android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCardNumber"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Card number">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCardNumber" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:inputType="number"
+                android:maxLength="19"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:layout_marginTop="@dimen/input_spacing">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilExpiry"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:hint="MM/YY" android:layout_marginEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etExpiry" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="number" android:maxLength="5"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCvv"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:hint="CVV">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCvv" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:inputType="numberPassword"
+                    android:maxLength="4"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCardHolder"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Cardholder name" android:layout_marginTop="@dimen/input_spacing">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCardHolder" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView android:id="@+id/tvTotal" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="24dp"
+            android:textSize="20sp" android:textColor="@color/fs_text_primary"/>
+        <!--
+            [V-18-style] No filterTouchesWhenObscured on the confirm button.
+            A tapjacking overlay could intercept this touch event.
+        -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmPayment" android:layout_width="match_parent"
+            android:layout_height="56dp" android:text="@string/payment_confirm"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>

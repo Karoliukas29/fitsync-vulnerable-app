@@ -1,0 +1,20 @@
+{
+  "project_info": {
+    "project_number": "837461920543",
+    "project_id": "fitsync-pro-d7e2f",
+    "storage_bucket": "fitsync-pro-d7e2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837461920543:android:a4b2c1d9e8f7a3b2",
+        "android_client_info": { "package_name": "com.fitsync.app" }
+      },
+      "api_key": [{ "current_key": "AIzaSyD4mR9pL6wK3nJ8vB1xQ5uE2oH7tY0cW" }],
+      "services": {
+        "appinvite_service": { "other_platform_oauth_client": [] }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
