@@ -9,11 +9,7 @@ Use it to practice static analysis, traffic interception, and runtime hooking on
 something that behaves like production code, without touching a real app you don't
 have permission to test.
 
-> ⚠️ **This app is intentionally insecure. Never install it on a phone you use for
-> real accounts, and never point it at real infrastructure.** Run it on an emulator
-> or a dedicated test device only.
-
----
+> ⚠️ **This app is intentionally insecure.
 
 ## Everything in here is fake
 
@@ -24,34 +20,6 @@ hardcoded secrets, not so you can use them. The package name (`com.fitsync.app`)
 the company, and the endpoints are all made up.
 
 ---
-
-## Try it
-
-### Option A — install the prebuilt APK (fastest)
-
-Grab `app-debug.apk` from the [**Releases**](../../releases) page, then:
-
-```bash
-adb install app-debug.apk
-```
-
-Boot an emulator or plug in a test device first. The debug build is unsigned for
-Play but installs fine locally.
-
-### Option B — build it yourself
-
-```bash
-git clone https://github.com/Karoliukas29/fitsync-vulnerable-app.git
-cd fitsync-vulnerable-app
-./gradlew assembleDebug
-adb install app/build/outputs/apk/debug/app-debug.apk
-```
-
-Needs a JDK 17+ and the Android SDK (`compileSdk 35`). No signing config is
-included — add your own if you want a release build.
-
----
-
 ## The challenge
 
 There are **18 planted vulnerabilities**. No answer key ships with this repo on
