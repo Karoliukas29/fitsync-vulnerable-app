@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.fitsync.app.data.remote.ApiClient
+import com.fitsync.app.data.repository.AuthRepository
 import com.fitsync.app.databinding.ActivityLoginBinding
 import com.fitsync.app.ui.dashboard.DashboardActivity
 import com.fitsync.app.util.AnalyticsHelper
@@ -19,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var session: SessionManager
     private lateinit var biometricHelper: BiometricHelper
+    private lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
 
         session         = SessionManager(this)
         biometricHelper = BiometricHelper(this)
+        authRepository  = AuthRepository(ApiClient.create(session), session)
 
         binding.btnSignIn.setOnClickListener { attemptLogin() }
         binding.btnBiometric.setOnClickListener { attemptBiometric() }
@@ -43,11 +47,18 @@ class LoginActivity : AppCompatActivity() {
 
         setLoading(true)
         lifecycleScope.launch {
-            // In the real app this calls AuthRepository.login()
-            // For the demo, simulate a successful login
             Timber.d("Login attempt for $email")
-            session.saveAuthToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3IxMjM0IiwiZW1haWwiOiIkZW1haWwiLCJyb2xlIjoibWFuYWdlciIsImV4cCI6MTcwOTI1MTIwMH0.signature")
-            session.saveUser(email, "manager", false)
+            // Calls POST /auth/login on the backend. Against the bundled mock server
+            // this returns the (intentionally over-sharing) AuthResponse, which is
+            // what you intercept in Burp. If the backend is unreachable — e.g. no
+            // proxy/mock configured — we fall back to a demo session so the app
+            // stays usable offline.
+            val result = authRepository.login(email, password)
+            if (result.isFailure) {
+                Timber.w("Backend unreachable, using demo session: ${result.exceptionOrNull()?.message}")
+                session.saveAuthToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3IxMjM0IiwiZW1haWwiOiIkZW1haWwiLCJyb2xlIjoibWFuYWdlciIsImV4cCI6MTcwOTI1MTIwMH0.signature")
+                session.saveUser(email, "manager", false)
+            }
             AnalyticsHelper.trackLogin(email.hashCode().toString(), "password")
             navigateToDashboard()
         }
